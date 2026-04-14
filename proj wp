@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FarmBridge — From Soil to Table</title>
+<link rel="stylesheet" href="style.css">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.10.2/sql-wasm.js"></script>
+</head>
+<body>
+
+<div id="loader">
+  <div class="loader-inner">
+    <div class="sprout">🌱</div>
+    <p>Growing your marketplace...</p>
+    <div class="loader-bar"><div class="loader-fill"></div></div>
+  </div>
+</div>
+
+<header id="header">
+  <div class="logo">
+    <span class="logo-icon">🌾</span>
+    <span class="logo-text">Farm<em>Bridge</em></span>
+  </div>
+  <nav class="main-nav">
+    <button class="nav-btn active" data-page="home">Home</button>
+    <button class="nav-btn" data-page="marketplace">Marketplace</button>
+    <button class="nav-btn" data-page="farmers">Farmers</button>
+    <button class="nav-btn" data-page="restaurants">Restaurants</button>
+    <button class="nav-btn" data-page="orders">Orders</button>
+  </nav>
+  <div class="header-actions">
+    <button class="btn-secondary" onclick="openModal('loginModal')">Sign In</button>
+    <button class="btn-primary" onclick="openModal('registerModal')">Join Now</button>
+  </div>
+  <button class="hamburger" id="hamburger">☰</button>
+</header>
+
+<div class="mobile-nav" id="mobileNav">
+  <button class="nav-btn" data-page="home">🏠 Home</button>
+  <button class="nav-btn" data-page="marketplace">🛒 Marketplace</button>
+  <button class="nav-btn" data-page="farmers">🧑‍🌾 Farmers</button>
+  <button class="nav-btn" data-page="restaurants">🍽️ Restaurants</button>
+  <button class="nav-btn" data-page="orders">📦 Orders</button>
+</div>
+
+<main id="app">
+
+  <section class="page active" id="page-home">
+    <div class="hero">
+      <div class="hero-bg">
+        <div class="blob blob1"></div>
+        <div class="blob blob2"></div>
+        <div class="blob blob3"></div>
+      </div>
+      <div class="hero-content">
+        <div class="hero-badge">🌿 Seasonal. Local. Fresh.</div>
+        <h1 class="hero-title">Where Farms <em>Meet</em><br>Restaurant Tables</h1>
+        <p class="hero-sub">FarmBridge connects local farmers directly with restaurants seeking the freshest seasonal ingredients — cutting middlemen, boosting profits, and serving better food.</p>
+        <div class="hero-cta">
+          <button class="btn-hero" onclick="navigate('marketplace')">Explore Marketplace</button>
+          <button class="btn-hero-outline" onclick="openModal('registerModal')">Join as Farmer / Restaurant</button>
+        </div>
+        <div class="hero-stats">
+          <div class="stat"><span id="stat-farmers">0</span><label>Farmers</label></div>
+          <div class="stat-divider"></div>
+          <div class="stat"><span id="stat-products">0</span><label>Products</label></div>
+          <div class="stat-divider"></div>
+          <div class="stat"><span id="stat-restaurants">0</span><label>Restaurants</label></div>
+          <div class="stat-divider"></div>
+          <div class="stat"><span id="stat-orders">0</span><label>Orders</label></div>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <div class="produce-grid" id="produceGrid"></div>
+      </div>
+    </div>
+
+    <div class="section-wrap">
+      <div class="section-label">How It Works</div>
+      <h2 class="section-title">Simple as a Seed to a Harvest</h2>
+      <div class="steps-grid">
+        <div class="step-card">
+          <div class="step-num">01</div>
+          <div class="step-icon">🧑‍🌾</div>
+          <h3>Farmers List Produce</h3>
+          <p>Local farmers register and list their seasonal harvests with prices, quantities, and availability dates.</p>
+        </div>
+        <div class="step-arrow">→</div>
+        <div class="step-card">
+          <div class="step-num">02</div>
+          <div class="step-icon">🔍</div>
+          <h3>Restaurants Browse</h3>
+          <p>Chefs and procurement teams explore the marketplace filtered by season, type, and proximity.</p>
+        </div>
+        <div class="step-arrow">→</div>
+        <div class="step-card">
+          <div class="step-num">03</div>
+          <div class="step-icon">🤝</div>
+          <h3>Direct Connection</h3>
+          <p>Place orders directly. No middlemen. Better prices for farmers, fresher produce for restaurants.</p>
+        </div>
+        <div class="step-arrow">→</div>
+        <div class="step-card">
+          <div class="step-num">04</div>
+          <div class="step-icon">🍽️</div>
+          <h3>Farm-to-Table</h3>
+          <p>Ingredients go from harvest to kitchen in 24–48 hours. Track orders and build long-term partnerships.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-wrap alt-bg">
+      <div class="section-label">In Season Now</div>
+      <h2 class="section-title">What's Fresh This Season</h2>
+      <div class="featured-grid" id="featuredProducts"></div>
+      <button class="btn-center" onclick="navigate('marketplace')">View All Products →</button>
+    </div>
+
+    <div class="section-wrap">
+      <div class="section-label">Community Stories</div>
+      <h2 class="section-title">Voices from the Field & Kitchen</h2>
+      <div class="testimonials">
+        <div class="testimonial-card">
+          <div class="quote-mark">"</div>
+          <p>FarmBridge helped us triple our restaurant partnerships in just 3 months. The platform is incredibly intuitive.</p>
+          <div class="testimonial-author">
+            <div class="author-avatar">🧑‍🌾</div>
+            <div><strong>Ravi Patel</strong><br><small>Organic Farm, Nashik</small></div>
+          </div>
+        </div>
+        <div class="testimonial-card featured-testimonial">
+          <div class="quote-mark">"</div>
+          <p>We reduced our ingredient costs by 30% while getting noticeably better quality produce. Our guests actually notice the difference.</p>
+          <div class="testimonial-author">
+            <div class="author-avatar">👩‍🍳</div>
+            <div><strong>Priya Sharma</strong><br><small>Head Chef, The Bombay Table</small></div>
+          </div>
+        </div>
+        <div class="testimonial-card">
+          <div class="quote-mark">"</div>
+          <p>The seasonal filtering is brilliant. I can plan my menu weeks ahead knowing exactly what's coming from local farms.</p>
+          <div class="testimonial-author">
+            <div class="author-avatar">👨‍🍳</div>
+            <div><strong>Arjun Mehta</strong><br><small>Executive Chef, Spice Route</small></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="page" id="page-marketplace">
+    <div class="page-hero">
+      <h1>🛒 Marketplace</h1>
+      <p>Fresh seasonal produce, directly from local farms</p>
+    </div>
+    <div class="page-content">
+      <div class="filter-bar">
+        <div class="search-wrap">
+          <span class="search-icon">🔍</span>
+          <input type="text" id="searchInput" placeholder="Search produce, farmer, location..." oninput="filterProducts()">
+        </div>
+        <div class="filter-group">
+          <select id="categoryFilter" onchange="filterProducts()">
+            <option value="">All Categories</option>
+            <option value="Vegetables">🥦 Vegetables</option>
+            <option value="Fruits">🍎 Fruits</option>
+            <option value="Grains">🌾 Grains</option>
+            <option value="Herbs">🌿 Herbs</option>
+            <option value="Dairy">🥛 Dairy</option>
+            <option value="Mushrooms">🍄 Mushrooms</option>
+          </select>
+          <select id="seasonFilter" onchange="filterProducts()">
+            <option value="">All Seasons</option>
+            <option value="Summer">☀️ Summer</option>
+            <option value="Monsoon">🌧️ Monsoon</option>
+            <option value="Winter">❄️ Winter</option>
+            <option value="Year-round">🔄 Year-round</option>
+          </select>
+          <select id="sortFilter" onchange="filterProducts()">
+            <option value="newest">Newest First</option>
+            <option value="price_asc">Price: Low to High</option>
+            <option value="price_desc">Price: High to Low</option>
+          </select>
+        </div>
+        <button class="btn-primary" onclick="openModal('addProductModal')">+ List Produce</button>
+      </div>
+
+      <div class="results-info" id="resultsInfo"></div>
+      <div class="products-grid" id="productsGrid">
+        <div class="loading-state">Loading fresh produce... 🌱</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="page" id="page-farmers">
+    <div class="page-hero">
+      <h1>🧑‍🌾 Our Farmers</h1>
+      <p>Meet the hands that grow your food</p>
+    </div>
+    <div class="page-content">
+      <div class="filter-bar">
+        <div class="search-wrap">
+          <span class="search-icon">🔍</span>
+          <input type="text" id="farmerSearch" placeholder="Search farmers by name or location..." oninput="filterFarmers()">
+        </div>
+        <button class="btn-primary" onclick="openModal('addFarmerModal')">+ Register Farm</button>
+      </div>
+      <div class="farmers-grid" id="farmersGrid"></div>
+    </div>
+  </section>
+
+  <section class="page" id="page-restaurants">
+    <div class="page-hero">
+      <h1>🍽️ Partner Restaurants</h1>
+      <p>Kitchens that champion local & seasonal</p>
+    </div>
+    <div class="page-content">
+      <div class="filter-bar">
+        <div class="search-wrap">
+          <span class="search-icon">🔍</span>
+          <input type="text" id="restaurantSearch" placeholder="Search restaurants..." oninput="filterRestaurants()">
+        </div>
+        <button class="btn-primary" onclick="openModal('addRestaurantModal')">+ Register Restaurant</button>
+      </div>
+      <div class="restaurants-grid" id="restaurantsGrid"></div>
+    </div>
+  </section>
+
+  <section class="page" id="page-orders">
+    <div class="page-hero">
+      <h1>📦 Order Tracker</h1>
+      <p>Real-time order management dashboard</p>
+    </div>
+    <div class="page-content">
+      <div class="orders-summary" id="ordersSummary"></div>
+      <div class="filter-bar">
+        <select id="orderStatusFilter" onchange="filterOrders()">
+          <option value="">All Statuses</option>
+          <option value="Pending">⏳ Pending</option>
+          <option value="Confirmed">✅ Confirmed</option>
+          <option value="In Transit">🚚 In Transit</option>
+          <option value="Delivered">📬 Delivered</option>
+          <option value="Cancelled">❌ Cancelled</option>
+        </select>
+      </div>
+      <div class="orders-table-wrap">
+        <table class="orders-table" id="ordersTable">
+          <thead>
+            <tr>
+              <th>Order ID</th>
+              <th>Product</th>
+              <th>Restaurant</th>
+              <th>Farmer</th>
+              <th>Qty</th>
+              <th>Total</th>
+              <th>Status</th>
+              <th>Date</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="ordersBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<div class="modal-overlay" id="registerModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('registerModal')">✕</button>
+    <div class="modal-tabs">
+      <button class="modal-tab active" onclick="switchTab('farmer')">🧑‍🌾 I'm a Farmer</button>
+      <button class="modal-tab" onclick="switchTab('restaurant')">🍽️ I'm a Restaurant</button>
+    </div>
+    <div id="farmerTab" class="tab-content active">
+      <h2>Register Your Farm</h2>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Farm Name *</label>
+          <input type="text" id="farmName" placeholder="e.g. Green Valley Organics">
+        </div>
+        <div class="form-group">
+          <label>Farmer Name *</label>
+          <input type="text" id="farmerName" placeholder="Your full name">
+        </div>
+        <div class="form-group">
+          <label>Location *</label>
+          <input type="text" id="farmerLocation" placeholder="City, State">
+        </div>
+        <div class="form-group">
+          <label>Phone *</label>
+          <input type="tel" id="farmerPhone" placeholder="+91 XXXXX XXXXX">
+        </div>
+        <div class="form-group full">
+          <label>Speciality Crops</label>
+          <input type="text" id="farmerCrops" placeholder="e.g. Tomatoes, Spinach, Mangoes">
+        </div>
+        <div class="form-group full">
+          <label>About Your Farm</label>
+          <textarea id="farmerBio" placeholder="Tell restaurants about your farming practices, certifications..."></textarea>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Farming Type</label>
+        <div class="radio-group">
+          <label class="radio-label"><input type="radio" name="farmType" value="Organic" checked> Organic</label>
+          <label class="radio-label"><input type="radio" name="farmType" value="Conventional"> Conventional</label>
+          <label class="radio-label"><input type="radio" name="farmType" value="Biodynamic"> Biodynamic</label>
+        </div>
+      </div>
+      <button class="btn-primary full-btn" onclick="registerFarmer()">Register Farm 🌱</button>
+    </div>
+    <div id="restaurantTab" class="tab-content">
+      <h2>Register Your Restaurant</h2>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Restaurant Name *</label>
+          <input type="text" id="restName" placeholder="e.g. The Spice Garden">
+        </div>
+        <div class="form-group">
+          <label>Contact Person *</label>
+          <input type="text" id="restContact" placeholder="Chef or Manager name">
+        </div>
+        <div class="form-group">
+          <label>Location *</label>
+          <input type="text" id="restLocation" placeholder="City, State">
+        </div>
+        <div class="form-group">
+          <label>Phone *</label>
+          <input type="tel" id="restPhone" placeholder="+91 XXXXX XXXXX">
+        </div>
+        <div class="form-group">
+          <label>Cuisine Type</label>
+          <input type="text" id="restCuisine" placeholder="e.g. Indian, Mediterranean, Fusion">
+        </div>
+        <div class="form-group">
+          <label>Seating Capacity</label>
+          <input type="number" id="restCapacity" placeholder="e.g. 80">
+        </div>
+        <div class="form-group full">
+          <label>About Your Restaurant</label>
+          <textarea id="restBio" placeholder="Tell farmers about your sourcing philosophy..."></textarea>
+        </div>
+      </div>
+      <button class="btn-primary full-btn" onclick="registerRestaurant()">Register Restaurant 🍽️</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="addProductModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('addProductModal')">✕</button>
+    <h2>🌿 List New Produce</h2>
+    <div class="form-grid">
+      <div class="form-group">
+        <label>Produce Name *</label>
+        <input type="text" id="prodName" placeholder="e.g. Cherry Tomatoes">
+      </div>
+      <div class="form-group">
+        <label>Category *</label>
+        <select id="prodCategory">
+          <option value="Vegetables">🥦 Vegetables</option>
+          <option value="Fruits">🍎 Fruits</option>
+          <option value="Grains">🌾 Grains</option>
+          <option value="Herbs">🌿 Herbs</option>
+          <option value="Dairy">🥛 Dairy</option>
+          <option value="Mushrooms">🍄 Mushrooms</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Price (₹ per kg) *</label>
+        <input type="number" id="prodPrice" placeholder="e.g. 120" min="1">
+      </div>
+      <div class="form-group">
+        <label>Available Quantity (kg) *</label>
+        <input type="number" id="prodQty" placeholder="e.g. 200" min="1">
+      </div>
+      <div class="form-group">
+        <label>Season *</label>
+        <select id="prodSeason">
+          <option value="Summer">☀️ Summer</option>
+          <option value="Monsoon">🌧️ Monsoon</option>
+          <option value="Winter">❄️ Winter</option>
+          <option value="Year-round">🔄 Year-round</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Farmer *</label>
+        <select id="prodFarmer"></select>
+      </div>
+      <div class="form-group">
+        <label>Available From</label>
+        <input type="date" id="prodFrom">
+      </div>
+      <div class="form-group">
+        <label>Available Until</label>
+        <input type="date" id="prodUntil">
+      </div>
+      <div class="form-group full">
+        <label>Description</label>
+        <textarea id="prodDesc" placeholder="Describe your produce — growing methods, taste, certifications..."></textarea>
+      </div>
+    </div>
+    <div class="modal-emoji-picker">
+      <label>Produce Emoji</label>
+      <div class="emoji-options" id="emojiPicker"></div>
+    </div>
+    <button class="btn-primary full-btn" onclick="addProduct()">List Produce 🌱</button>
+  </div>
+</div>
+
+<div class="modal-overlay" id="orderModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('orderModal')">✕</button>
+    <h2>🛒 Place Order</h2>
+    <div id="orderProductInfo" class="order-product-info"></div>
+    <div class="form-grid">
+      <div class="form-group">
+        <label>Restaurant *</label>
+        <select id="orderRestaurant"></select>
+      </div>
+      <div class="form-group">
+        <label>Quantity (kg) *</label>
+        <input type="number" id="orderQty" placeholder="Enter quantity" min="1" oninput="updateOrderTotal()">
+      </div>
+      <div class="form-group full">
+        <label>Delivery Notes</label>
+        <textarea id="orderNotes" placeholder="Delivery preferences, special instructions..."></textarea>
+      </div>
+    </div>
+    <div class="order-total" id="orderTotal"></div>
+    <button class="btn-primary full-btn" onclick="placeOrder()">Confirm Order 📦</button>
+  </div>
+</div>
+
+<div class="modal-overlay" id="loginModal">
+  <div class="modal small-modal">
+    <button class="modal-close" onclick="closeModal('loginModal')">✕</button>
+    <h2>👋 Welcome Back</h2>
+    <p style="color:var(--muted); margin-bottom:1.5rem;">Sign in to manage your listings and orders</p>
+    <div class="form-group">
+      <label>Email or Phone</label>
+      <input type="text" placeholder="your@email.com">
+    </div>
+    <div class="form-group">
+      <label>Password</label>
+      <input type="password" placeholder="••••••••">
+    </div>
+    <button class="btn-primary full-btn" onclick="showToast('✅ Logged in successfully!', 'success'); closeModal('loginModal')">Sign In</button>
+    <p class="modal-footer-text">Don't have an account? <a href="#" onclick="closeModal('loginModal'); openModal('registerModal')">Join FarmBridge</a></p>
+  </div>
+</div>
+
+<div class="modal-overlay" id="farmerDetailModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('farmerDetailModal')">✕</button>
+    <div id="farmerDetailContent"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<div class="db-banner" id="dbBanner">
+  <span>🗄️ SQLite DB Active</span>
+  <span id="dbStats">Loading...</span>
+  <button onclick="exportDB()">Export SQL</button>
+  <button onclick="document.getElementById('dbBanner').style.display='none'">✕</button>
+</div>
+
+<footer class="main-footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <span class="logo-icon">🌾</span>
+      <span class="logo-text">Farm<em>Bridge</em></span>
+      <p>Connecting soil to table, one harvest at a time.</p>
+    </div>
+    <div class="footer-links">
+      <h4>Platform</h4>
+      <a href="#" onclick="navigate('marketplace')">Marketplace</a>
+      <a href="#" onclick="navigate('farmers')">Farmers</a>
+      <a href="#" onclick="navigate('restaurants')">Restaurants</a>
+      <a href="#" onclick="navigate('orders')">Orders</a>
+    </div>
+    <div class="footer-links">
+      <h4>Join</h4>
+      <a href="#" onclick="openModal('registerModal')">Register as Farmer</a>
+      <a href="#" onclick="openModal('registerModal')">Register as Restaurant</a>
+    </div>
+    <div class="footer-copy">
+      <p>Built with 💚 for local food systems · FarmBridge 2025</p>
+      <p style="font-size:0.7rem; opacity:0.5; margin-top:0.3rem;">Powered by SQLite (sql.js WebAssembly)</p>
+    </div>
+  </div>
+</footer>
+
+<script src="db.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
