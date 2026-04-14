@@ -35,6 +35,8 @@ No external APIs were used in this project. The application is a static implemen
 - Making the layout responsive  
 
 5. Contributions of Each Team Member 
+
+
 Utkarsha Gosavi 
 Worked on Backend 
 
