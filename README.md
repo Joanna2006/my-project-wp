@@ -36,13 +36,11 @@ No external APIs were used in this project. The application is a static implemen
 
 5. Contributions of Each Team Member 
 
-
 Utkarsha Gosavi 
 Worked on Backend 
 
 Joanna James  
 Worked on designing the interface and creating HTML structure  
-
 
 Tanmaya056  
 Worked on Data base
@@ -50,24 +48,13 @@ Worked on Data base
 Advait Kurup  
 Worked on CSS styling and layout  
 
-6. Screenshots of the App Flow  
-
-Home Page  
-(Add screenshot here)
-
-Product Page  
-(Add screenshot here)
-
-Order Page  
-(Add screenshot here)
-
-7. Features of the Application  
+6. Features of the Application  
 - Displays fruits and vegetables  
 - Category-based navigation  
 - Simple interface  
 - Basic order system  
 
-8. Future Scope  
+7. Future Scope  
 - Add payment system  
 - Improve user interface  
 - Add more product categories  
